@@ -2,8 +2,11 @@ import time
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.db.db import engine
 
+# Workout 
 from app.modules.workouts.workout_route import router as workout_router
+from app.modules.workouts.workout_model import WorkoutModel
 
 app = FastAPI()
 
@@ -14,6 +17,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create database tables
+WorkoutModel.metadata.create_all(bind=engine)
 
 # Root endpoint for health check or basic response
 @app.get("/")
