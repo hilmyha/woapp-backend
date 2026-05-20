@@ -13,3 +13,8 @@ class WorkoutUpdate(BaseModel):
 
 class WorkoutResponse(Workout):
     id: int
+
+    # allow population by attribute name (e.g. from ORM objects)
+    model_config = {
+        "from_attributes": True
+    }
