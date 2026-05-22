@@ -4,6 +4,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.db import engine
 
+# User
+from app.modules.users.user_route import router as user_router
+from app.modules.users.user_model import UserModel
+
 # Workout 
 from app.modules.workouts.workout_route import router as workout_router
 from app.modules.workouts.workout_model import WorkoutModel
@@ -19,6 +23,7 @@ app.add_middleware(
 )
 
 # Create database tables
+UserModel.metadata.create_all(bind=engine)
 WorkoutModel.metadata.create_all(bind=engine)
 
 # Root endpoint for health check or basic response
@@ -27,4 +32,5 @@ def health_check():
     return f"Health checked at {int(time.time() * 1000)} ms"
 
 # Include routers from different modules
+app.include_router(user_router)
 app.include_router(workout_router)
