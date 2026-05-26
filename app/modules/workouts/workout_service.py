@@ -44,4 +44,4 @@ def delete_workout(db: Session, id: int):
   db.delete(data)
   db.commit()
   
-  return f"Workout with ID {id} has been deleted."
+  return {"detail": f"Workout with ID {id} has been deleted."}
