@@ -4,9 +4,17 @@ from sqlalchemy.orm import Session
 from app.modules.users.user_model import UserModel
 
 from app.modules.users.user_schema import UserCreate, UserUpdate
+from app.core.hashing import hash_password
 
 def add_user(db: Session, user: UserCreate):
-  data = UserModel(**user.dict())
+  # hash the password before saving to the database
+  payload = user.dict()
+
+  payload["password"] = hash_password(
+      user.password
+  )
+
+  data = UserModel(**payload)
 
   db.add(data)
   db.commit()
@@ -31,7 +39,12 @@ def get_user(db: Session, id: int):
 def update_user(db: Session, id: int, user: UserUpdate):
   data = get_user(db, id)
 
-  for key, value in user.dict().items():
+  payload = user.dict(exclude_unset=True)
+
+  if "password" in payload:
+    payload["password"] = hash_password(payload["password"])
+
+  for key, value in payload.items():
     if value is not None:
       setattr(data, key, value)
 

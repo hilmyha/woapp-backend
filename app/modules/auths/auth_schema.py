@@ -1,18 +1,24 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
-class UserLogin(BaseModel):
-    email: str
+class UserBase(BaseModel):
+    email: EmailStr
     password: str
 
-class UserRegister(UserLogin):
+class UserLogin(UserBase):
+    pass
+
+class UserRegister(UserBase):
     name: str
 
-class UserResponse(UserLogin):
+class UserResponse(UserBase):
     id: int
-    name: str
-    email: str
 
     # allow population by attribute name (e.g. from ORM objects)
     model_config = {
         "from_attributes": True
     }
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
