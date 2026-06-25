@@ -18,6 +18,10 @@ from app.modules.users.user_model import UserModel
 from app.modules.exercises.exercise_route import router as exercise_router
 from app.modules.exercises.exercise_model import ExerciseModel
 
+# Workouts
+from app.modules.workouts.workout_route import router as workout_router
+from app.modules.workouts.workout_model import WorkoutModel
+
 app = FastAPI()
 
 # Allow CORS for all origins, methods, and headers
@@ -31,6 +35,7 @@ app.add_middleware(
 # Create database tables
 UserModel.metadata.create_all(bind=engine)
 ExerciseModel.metadata.create_all(bind=engine)
+WorkoutModel.metadata.create_all(bind=engine)
 
 # Root endpoint for health check or basic response
 @app.get("/")
@@ -41,6 +46,7 @@ def health_check():
 app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(exercise_router)
+app.include_router(workout_router)
 
 @app.on_event("startup")
 def startup():
