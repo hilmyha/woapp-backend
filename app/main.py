@@ -4,12 +4,19 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.db import engine
 
+from app.db.db import SessionLocal
+from app.db.seed import seed_categories, seed_exercises
+
 # Auth
 from app.modules.auths.auth_route import router as auth_router
 
 # User
 from app.modules.users.user_route import router as user_router
 from app.modules.users.user_model import UserModel
+
+# Exercises
+from app.modules.exercises.exercise_route import router as exercise_router
+from app.modules.exercises.exercise_model import ExerciseModel
 
 app = FastAPI()
 
@@ -23,6 +30,7 @@ app.add_middleware(
 
 # Create database tables
 UserModel.metadata.create_all(bind=engine)
+ExerciseModel.metadata.create_all(bind=engine)
 
 # Root endpoint for health check or basic response
 @app.get("/")
@@ -32,3 +40,13 @@ def health_check():
 # Include routers from different modules
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(exercise_router)
+
+@app.on_event("startup")
+def startup():
+    db = SessionLocal()
+
+    seed_categories(db)
+    seed_exercises(db)
+
+    db.close()
