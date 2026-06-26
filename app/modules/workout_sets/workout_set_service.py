@@ -1,12 +1,11 @@
 from fastapi import HTTPException
 
 from sqlalchemy.orm import Session
-from app.modules.users.user_model import UserModel
 from app.modules.workout_sets.workout_set_model import WorkoutSetModel
 
 from app.modules.workout_sets.workout_set_schema import SetCreate
 
-def add_set_to_exercise(db: Session, workout_exercise_id: int, user: UserModel, set: SetCreate):
+def add_set_to_exercise(db: Session, workout_exercise_id: int, set: SetCreate):
   payload = WorkoutSetModel(
       **set.model_dump(),
       workout_exercise_id=workout_exercise_id,

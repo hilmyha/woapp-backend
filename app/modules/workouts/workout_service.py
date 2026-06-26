@@ -1,10 +1,10 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import selectinload
 
 from sqlalchemy.orm import Session
 from app.modules.users.user_model import UserModel
 from app.modules.workouts.workout_model import WorkoutModel
-from app.modules.workout_exercise.workout_exercise_model import WorkoutExerciseModel
+
+from app.core.guards.owned_workout import get_owned_workout
 
 from app.modules.workouts.workout_schema import WorkoutCreate, WorkoutUpdate
 
@@ -26,7 +26,7 @@ def get_workouts(db: Session, user: UserModel):
   return workouts
 
 def get_workout(db: Session, user: UserModel, id: int):
-  workout = db.query(WorkoutModel).filter(WorkoutModel.id == id, WorkoutModel.user_id == user.id).first()
+  workout = get_owned_workout(db, user, id)
   
   if not workout:
     raise HTTPException(status_code=404, detail=f"Workout with ID {id} not found")
