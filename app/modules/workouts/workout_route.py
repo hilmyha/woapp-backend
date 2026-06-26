@@ -22,7 +22,7 @@ async def get_all_workouts(user: CurrentUser,db: Session = Depends(get_db)):
 async def get_workout_by_id(id: int, user: CurrentUser, db: Session = Depends(get_db)):
   return get_workout(db, user, id)
 
-@router.put("/{id}", response_model=WorkoutResponse)
+@router.patch("/{id}", response_model=WorkoutResponse)
 async def update_workout_by_id(id: int, workout: WorkoutUpdate, user: CurrentUser, db: Session = Depends(get_db)):
   return update_workout(db, id, user, workout)
 

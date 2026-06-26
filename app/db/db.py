@@ -7,7 +7,16 @@ from sqlalchemy.ext.declarative import declarative_base
 
 dotenv.load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:haidar123@localhost:5432/woapp")
+
+# Create the SQLAlchemy engine
+engine = create_engine(DATABASE_URL, echo=True)
+
+# Create a configured "Session" class
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base class for declarative models
+Base = declarative_base()
 
 # Dependency to get DB session
 def get_db():
@@ -16,12 +25,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# Create the SQLAlchemy engine
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-
-# Create a configured "Session" class
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Base class for declarative models
-Base = declarative_base()
