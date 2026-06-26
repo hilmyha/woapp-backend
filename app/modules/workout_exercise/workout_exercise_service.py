@@ -16,7 +16,6 @@ def add_exercise_to_workout(workout_id: int, exercise_id: int, user: UserModel, 
   payload = WorkoutExerciseModel(
       workout_id=workout_id,
       exercise_id=exercise_id,
-      user_id=user.id
   )
 
   db.add(payload)
@@ -26,7 +25,7 @@ def add_exercise_to_workout(workout_id: int, exercise_id: int, user: UserModel, 
   return payload
 
 def get_workout_exercises(db: Session, user: UserModel, id: int):
-  exercise = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == id, WorkoutExerciseModel.workout.user_id == user.id).all()
+  exercise = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == id).all()
 
   if not exercise:
     raise HTTPException(status_code=404, detail=f"Workout exercise with ID {id} not found")
@@ -34,7 +33,7 @@ def get_workout_exercises(db: Session, user: UserModel, id: int):
   return exercise
 
 def remove_exercise_from_workout(db: Session, workout_id: int, user: UserModel, id: int):
-  data = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == workout_id, WorkoutExerciseModel.id == id, WorkoutExerciseModel.workout.user_id == user.id).first()
+  data = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == workout_id, WorkoutExerciseModel.id == id).first()
   
   if not data:
     raise HTTPException(status_code=404, detail=f"Workout exercise with ID {id} not found")

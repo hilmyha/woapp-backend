@@ -1,8 +1,10 @@
 from fastapi import HTTPException
+from sqlalchemy.orm import selectinload
 
 from sqlalchemy.orm import Session
 from app.modules.users.user_model import UserModel
 from app.modules.workouts.workout_model import WorkoutModel
+from app.modules.workout_exercise.workout_exercise_model import WorkoutExerciseModel
 
 from app.modules.workouts.workout_schema import WorkoutCreate, WorkoutUpdate
 

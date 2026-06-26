@@ -26,6 +26,11 @@ from app.modules.workouts.workout_model import WorkoutModel
 from app.modules.workout_exercise.workout_exercise_route import router as workout_exercise_router
 from app.modules.workout_exercise.workout_exercise_model import WorkoutExerciseModel
 
+# Workout Sets
+from app.modules.workout_sets.workout_set_route import router as workout_set_router
+from app.modules.workout_sets.workout_set_model import WorkoutSetModel
+
+
 app = FastAPI()
 
 # Allow CORS for all origins, methods, and headers
@@ -41,6 +46,7 @@ UserModel.metadata.create_all(bind=engine)
 ExerciseModel.metadata.create_all(bind=engine)
 WorkoutModel.metadata.create_all(bind=engine)
 WorkoutExerciseModel.metadata.create_all(bind=engine)
+WorkoutSetModel.metadata.create_all(bind=engine)
 
 # Root endpoint for health check or basic response
 @app.get("/")
@@ -53,6 +59,7 @@ app.include_router(user_router)
 app.include_router(exercise_router)
 app.include_router(workout_router)
 app.include_router(workout_exercise_router)
+app.include_router(workout_set_router)
 
 @app.on_event("startup")
 def startup():

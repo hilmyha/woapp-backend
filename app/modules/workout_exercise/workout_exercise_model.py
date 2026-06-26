@@ -11,3 +11,4 @@ class WorkoutExerciseModel(Base):
   
   workout = relationship("WorkoutModel", back_populates="exercises")
   exercise = relationship("ExerciseModel", back_populates="workouts")
+  sets = relationship("WorkoutSetModel", back_populates="workout_exercise", cascade="all, delete-orphan")
