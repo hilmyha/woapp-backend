@@ -12,3 +12,4 @@ class WorkoutModel(Base):
   user_id = Column(Integer, ForeignKey("users.id"))
 
   user = relationship("UserModel", back_populates="workouts")
+  exercises = relationship("WorkoutExerciseModel", back_populates="workout")

@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from app.db.db import get_db
 
 from app.dependencies.auth import CurrentUser
-from app.modules.users.user_model import UserModel
 
 from app.modules.workouts.workout_schema import WorkoutCreate, WorkoutUpdate, WorkoutResponse
 from app.modules.workouts.workout_service import get_workouts, get_workout, add_workout, update_workout, delete_workout

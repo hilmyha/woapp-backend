@@ -6,7 +6,7 @@ from app.db.db import get_db
 from app.modules.auths.auth_schema import UserLogin, UserRegister, UserResponse, TokenResponse
 from app.modules.auths.auth_service import register_user, login_user
 
-from app.middleware.auth import get_current_user
+from app.dependencies.auth import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

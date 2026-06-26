@@ -9,7 +9,7 @@ class CategoryModel(Base):
   id = Column(Integer, primary_key=True, index=True)
   name = Column(String, unique=True)
 
-  exercises = relationship("ExerciseModel", back_populates="category", cascade="all, delete-orphan")
+  exercises = relationship("ExerciseModel", back_populates="category")
 
 # define exercise model
 class ExerciseModel(Base):
@@ -20,3 +20,4 @@ class ExerciseModel(Base):
   category_id = Column(Integer, ForeignKey("categories.id"))
 
   category = relationship("CategoryModel", back_populates="exercises")
+  workouts = relationship("WorkoutExerciseModel", back_populates="exercise")
