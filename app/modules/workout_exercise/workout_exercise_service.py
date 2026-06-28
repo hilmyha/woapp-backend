@@ -19,8 +19,6 @@ def add_exercise_to_workout(workout_id: int, exercise: CreateWorkoutExercise, us
 
   payload = WorkoutExerciseModel(**exercise.model_dump())
 
-  print(payload)
-
   db.add(payload)
   db.commit()
   db.refresh(payload)

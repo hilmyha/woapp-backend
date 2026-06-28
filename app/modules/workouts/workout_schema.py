@@ -11,7 +11,7 @@ class WorkoutCreate(Workout):
 
 class WorkoutUpdate(BaseModel):
     name: str | None = None
-    date: str | None = None
+    date: datetime | None = None
 
 class WorkoutResponse(Workout):
     id: int
