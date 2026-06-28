@@ -12,6 +12,7 @@ class UserRegister(UserBase):
 
 class UserResponse(UserBase):
     id: int
+    name: str
 
     # allow population by attribute name (e.g. from ORM objects)
     model_config = {
