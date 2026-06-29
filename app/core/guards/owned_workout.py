@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.modules.workouts.workout_model import WorkoutModel
 from app.modules.users.user_model import UserModel
 
-def get_owned_workout(db: Session, user: UserModel, workout_id: int):
+def get_owned_workout( workout_id: int, user: UserModel, db: Session):
     workout = (
         db.query(WorkoutModel)
         .filter(

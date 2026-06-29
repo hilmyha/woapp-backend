@@ -5,7 +5,7 @@ from app.modules.workout_sets.workout_set_model import WorkoutSetModel
 
 from app.modules.workout_sets.workout_set_schema import SetCreate
 
-def add_set_to_exercise(db: Session, workout_exercise_id: int, set: SetCreate):
+def create_set_exercise(workout_exercise_id: int, set: SetCreate, db: Session):
   payload = WorkoutSetModel(
       **set.model_dump(),
       workout_exercise_id=workout_exercise_id,
@@ -17,7 +17,7 @@ def add_set_to_exercise(db: Session, workout_exercise_id: int, set: SetCreate):
 
   return payload
 
-def get_sets_per_exercise(db: Session, workout_exercise_id: int):
+def find_all_set_exercise(workout_exercise_id: int, db: Session):
   sets = db.query(WorkoutSetModel).filter(WorkoutSetModel.workout_exercise_id == workout_exercise_id).all()
 
   if not sets:

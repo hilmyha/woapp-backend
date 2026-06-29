@@ -6,7 +6,7 @@ from app.modules.users.user_model import UserModel
 from app.modules.users.user_schema import UserCreate, UserUpdate
 from app.core.hashing import hash_password
 
-def add_user(db: Session, user: UserCreate):
+def create_user(user: UserCreate, db: Session):
   # hash the password before saving to the database
   payload = user.dict()
 
@@ -22,13 +22,13 @@ def add_user(db: Session, user: UserCreate):
   
   return data
 
-def get_users(db: Session):
+def find_all_user(db: Session):
   if db.query(UserModel).count() == 0:
     raise HTTPException(status_code=404, detail="No users found")
 
   return db.query(UserModel).all()
 
-def get_user(db: Session, id: int):
+def find_one_user(id: int, db: Session):
   user = db.query(UserModel).filter(UserModel.id == id).first()
   
   if not user:
@@ -36,8 +36,8 @@ def get_user(db: Session, id: int):
   
   return user
 
-def update_user(db: Session, id: int, user: UserUpdate):
-  data = get_user(db, id)
+def update_user(id: int, user: UserUpdate, db: Session):
+  data = find_one_user(id, db)
 
   payload = user.dict(exclude_unset=True)
 
@@ -53,8 +53,8 @@ def update_user(db: Session, id: int, user: UserUpdate):
 
   return data
 
-def delete_user(db: Session, id: int):
-  data = get_user(db, id) 
+def delete_user(id: int, db: Session):
+  data = find_one_user(id, db) 
   
   db.delete(data)
   db.commit()

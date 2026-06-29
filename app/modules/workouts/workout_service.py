@@ -8,7 +8,7 @@ from app.core.guards.owned_workout import get_owned_workout
 
 from app.modules.workouts.workout_schema import WorkoutCreate, WorkoutUpdate
 
-def add_workout(db: Session, user: UserModel, workout: WorkoutCreate):
+def create_workout(workout: WorkoutCreate, user: UserModel, db: Session):
   payload = WorkoutModel(**workout.model_dump(), user_id=user.id)
 
   db.add(payload)
@@ -17,7 +17,7 @@ def add_workout(db: Session, user: UserModel, workout: WorkoutCreate):
 
   return payload
 
-def get_workouts(db: Session, user: UserModel):
+def find_all_workout(user: UserModel, db: Session):
   workouts = db.query(WorkoutModel).filter(WorkoutModel.user_id == user.id).all()
 
   if not workouts:
@@ -25,16 +25,16 @@ def get_workouts(db: Session, user: UserModel):
 
   return workouts
 
-def get_workout(db: Session, user: UserModel, id: int):
-  workout = get_owned_workout(db, user, id)
+def find_one_workout(id: int, user: UserModel, db: Session):
+  workout = get_owned_workout(id, user, db)
   
   if not workout:
     raise HTTPException(status_code=404, detail=f"Workout with ID {id} not found")
   
   return workout
 
-def update_workout(db: Session, id: int, user: UserModel, workout: WorkoutUpdate):
-  data = get_workout(db, user, id)
+def update_workout( id: int, workout: WorkoutUpdate, user: UserModel, db: Session):
+  data = find_one_workout(id, user, db)
 
   payload = workout.model_dump(exclude_unset=True)
 
@@ -47,8 +47,8 @@ def update_workout(db: Session, id: int, user: UserModel, workout: WorkoutUpdate
 
   return data
 
-def delete_workout(db: Session, user: UserModel, id: int):
-  data = get_workout(db, user, id) 
+def delete_workout(id: int, user: UserModel, db: Session):
+  data = find_one_workout(id, user, db) 
   
   db.delete(data)
   db.commit()

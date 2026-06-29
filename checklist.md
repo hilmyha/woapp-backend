@@ -8,20 +8,20 @@
   - [x] create
   - [x] read
   - [x] update
-  - [ ] delete
-    - note: missing response for delete but delete success
+  - [x] delete
+    - note: missing response for delete but delete success | change with dict
 ### workouts
   - [x] create
   - [x] read
   - [x] update
-  - [ ] delete
-    - note: missing response for delete but delete success
+  - [x] delete
+    - note: missing response for delete but delete success | change with dict
 ### workout exercise
   - [x] create
   - [x] read
-  - [ ] update
-  - [ ] delete
-    - note: missing response for delete but delete success
+  - [x] update
+  - [x] delete
+    - note: missing response for delete but delete success | change with dict
 ### workout exercise sets
   - [ ] create
     - note: correcting workout_id change to exercise_id

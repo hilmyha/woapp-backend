@@ -9,8 +9,8 @@ from app.modules.workout_exercise.workout_exercise_model import WorkoutExerciseM
 
 from app.core.guards.owned_workout import get_owned_workout
 
-def add_exercise_to_workout(workout_id: int, exercise: CreateWorkoutExercise, user: UserModel, db: Session):
-  workout = get_owned_workout(db, user, workout_id)
+def create_workout_exercise(workout_id: int, exercise: CreateWorkoutExercise, user: UserModel, db: Session):
+  workout = get_owned_workout(workout_id, user, db)
 
   exist = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == workout.id, WorkoutExerciseModel.exercise_id == exercise.exercise_id).first()
 
@@ -25,8 +25,8 @@ def add_exercise_to_workout(workout_id: int, exercise: CreateWorkoutExercise, us
 
   return payload
 
-def get_workout_exercises(db: Session, user: UserModel, id: int):
-  workout = get_owned_workout(db, user, id)
+def find_all_workout_exercise(workout_id: int, user: UserModel, db: Session):
+  workout = get_owned_workout(workout_id, user, db)
 
   exercise = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == workout.id).all()
 
@@ -35,8 +35,8 @@ def get_workout_exercises(db: Session, user: UserModel, id: int):
 
   return exercise
 
-def get_workout_exercise(db: Session, workout_id: int, user: UserModel, id: int):
-  workout = get_owned_workout(db, user, workout_id)
+def find_one_workout_exercise(id: int, workout_id: int, user: UserModel, db: Session):
+  workout = get_owned_workout(workout_id, user, db)
 
   exercise = db.query(WorkoutExerciseModel).filter(WorkoutExerciseModel.workout_id == workout.id, WorkoutExerciseModel.id == id).first()
 
@@ -45,8 +45,8 @@ def get_workout_exercise(db: Session, workout_id: int, user: UserModel, id: int)
 
   return exercise
 
-def update_workout_exercise(db: Session, workout_id: int, user: UserModel, id: int, exercise: CreateWorkoutExercise):
-  data = get_workout_exercise(db, workout_id, user, id)
+def update_workout_exercise(id: int, workout_id: int, user: UserModel, exercise: CreateWorkoutExercise, db: Session):
+  data = find_one_workout_exercise(id, workout_id, user, db)
 
   payload = exercise.model_dump(exclude_unset=True)
 
@@ -59,8 +59,8 @@ def update_workout_exercise(db: Session, workout_id: int, user: UserModel, id: i
 
   return data
 
-def remove_exercise_from_workout(db: Session, workout_id: int, user: UserModel, id: int):
-  data = get_workout_exercise(db, workout_id, user, id)
+def delete_workout_exercise(id: int, workout_id: int, user: UserModel, db: Session):
+  data = find_one_workout_exercise(id, workout_id, user, db)
 
   if not data:
     raise HTTPException(status_code=404, detail=f"Workout exercise with ID {id} not found")
